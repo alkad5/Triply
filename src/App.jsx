@@ -1,7 +1,10 @@
+import { Routes, Route } from "react-router-dom"
+import Home from "./pages/Home.jsx"
+
 export default function App() {
   return (
-    <div style={{ padding: "40px", fontSize: "30px" }}>
-      <h1>Triply is working 🚀</h1>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Home />} />
+    </Routes>
+  )
 }
