@@ -1,19 +1,20 @@
 import { destinations } from "../data/destinations.js"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
-  return (
-    <div style={{ padding: 40 }}>
-      <h1 style={{ fontSize: 40 }}>Triply 🌍</h1>
+  const navigate = useNavigate()
 
-      <p style={{ marginBottom: 20, color: "gray" }}>
-        Discover amazing destinations around the world
+  return (
+    <div style={{ padding: 40, fontFamily: "Arial" }}>
+      <h1 style={{ fontSize: 42, marginBottom: 10 }}>Triply 🌍</h1>
+      <p style={{ color: "gray", marginBottom: 30 }}>
+        Discover your next destination
       </p>
 
-      {/* GRID */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           gap: 20
         }}
       >
@@ -21,32 +22,47 @@ export default function Home() {
           <div
             key={place.id}
             style={{
-              border: "1px solid #ddd",
-              borderRadius: 12,
-              padding: 20,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-              transition: "0.2s",
-              cursor: "pointer"
+              borderRadius: 16,
+              overflow: "hidden",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              cursor: "pointer",
+              transition: "transform 0.2s"
             }}
+            onClick={() => navigate(`/destination/${place.id}`)}
           >
-            <h2 style={{ marginBottom: 5 }}>{place.city}</h2>
-            <h4 style={{ margin: 0, color: "gray" }}>{place.country}</h4>
-
-            <p style={{ marginTop: 10 }}>{place.description}</p>
-
-            <button
+            {/* IMAGE */}
+            <img
+              src={place.image}
+              alt={place.city}
               style={{
-                marginTop: 10,
-                padding: "8px 12px",
-                borderRadius: 8,
-                border: "none",
-                background: "#0077ff",
-                color: "white",
-                cursor: "pointer"
+                width: "100%",
+                height: 160,
+                objectFit: "cover"
               }}
-            >
-              Explore
-            </button>
+            />
+
+            {/* CONTENT */}
+            <div style={{ padding: 15 }}>
+              <h2 style={{ margin: 0 }}>{place.city}</h2>
+              <p style={{ margin: "5px 0", color: "gray" }}>
+                {place.country}
+              </p>
+              <p style={{ fontSize: 14 }}>{place.description}</p>
+
+              <button
+                style={{
+                  marginTop: 10,
+                  padding: "8px 12px",
+                  borderRadius: 8,
+                  border: "none",
+                  background: "#0077ff",
+                  color: "white",
+                  cursor: "pointer"
+                }}
+              >
+                Explore
+              </button>
+            </div>
           </div>
         ))}
       </div>
