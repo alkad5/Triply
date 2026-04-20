@@ -1,188 +1,302 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const [showTravelers, setShowTravelers] = useState(false);
   const [activeTab, setActiveTab] = useState("Beach");
-const [adults, setAdults] = useState(2);
-const [children, setChildren] = useState(0);
-const [rooms, setRooms] = useState(1);
-const [activeBestTimeTab, setActiveBestTimeTab] = useState("Panama");
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [rooms, setRooms] = useState(1);
   const [showDestinations, setShowDestinations] = useState(false);
-const [showCalendar, setShowCalendar] = useState(false);
-const [selectedDate, setSelectedDate] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarIndex, setCalendarIndex] = useState(0);
+  const [departureDate, setDepartureDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
+  const [selectedDestination, setSelectedDestination] = useState("");
+  const [selectedCity, setSelectedCity] = useState("Madrid");
 
-const monthsToShow = [];
-const today = new Date();
-const startMonth = today.getMonth();
-const startYear = today.getFullYear();
+  const navigate = useNavigate();
 
-for (let i = 0; i < 12; i++) {
-  const date = new Date(startYear, startMonth + i, 1);
-  monthsToShow.push({
-    month: date.toLocaleString("default", { month: "long" }),
-    year: date.getFullYear(),
-    monthIndex: date.getMonth(),
-  });
-}
-
-function getDaysInMonth(monthIndex, year) {
-  const days = new Date(year, monthIndex + 1, 0).getDate();
-  return Array.from({ length: days }, (_, i) => i + 1);
-}
-
-function handleDateClick(day, month, year) {
-  setSelectedDate(`${month} ${day}, ${year}`);
-  setShowCalendar(false);
-}
   const destinationOptions = [
-    { country: "Japan", hotel: "Park Hotel Tokyo" },
-    { country: "Madrid", hotel: "Hotel Riu Plaza España" },
-    { country: "Barbados", hotel: "Hilton Barbados Resort" },
-    { country: "Panama", hotel: "Hotel La Compañía" },
+    { country: "Japan" },
+    { country: "Madrid" },
+    { country: "Barbados" },
+    { country: "Panama" },
+    { country: "New York" },
+    { country: "Chicago" },
   ];
-  const bestTimeData = {
-  Panama: [
-    { month: "January", price: "$95 - $180" },
-    { month: "February", price: "$100 - $185" },
-    { month: "March", price: "$105 - $190" },
-    { month: "April", price: "$90 - $170" },
-    { month: "May", price: "$80 - $150" },
-    { month: "June", price: "$75 - $145" },
-    { month: "July", price: "$75 - $150" },
-    { month: "August", price: "$80 - $155" },
-    { month: "September", price: "$78 - $148" },
-    { month: "October", price: "$82 - $152" },
-    { month: "November", price: "$88 - $165" },
-    { month: "December", price: "$110 - $210" },
-  ],
-
-  Madrid: [
-    { month: "January", price: "$110 - $190" },
-    { month: "February", price: "$115 - $195" },
-    { month: "March", price: "$125 - $210" },
-    { month: "April", price: "$145 - $240" },
-    { month: "May", price: "$155 - $255" },
-    { month: "June", price: "$165 - $270" },
-    { month: "July", price: "$150 - $250" },
-    { month: "August", price: "$145 - $245" },
-    { month: "September", price: "$160 - $265" },
-    { month: "October", price: "$150 - $250" },
-    { month: "November", price: "$125 - $210" },
-    { month: "December", price: "$135 - $225" },
-  ],
-
-  Japan: [
-    { month: "January", price: "$95 - $175" },
-    { month: "February", price: "$100 - $180" },
-    { month: "March", price: "$125 - $230" },
-    { month: "April", price: "$145 - $260" },
-    { month: "May", price: "$135 - $240" },
-    { month: "June", price: "$115 - $200" },
-    { month: "July", price: "$120 - $210" },
-    { month: "August", price: "$125 - $220" },
-    { month: "September", price: "$118 - $205" },
-    { month: "October", price: "$130 - $225" },
-    { month: "November", price: "$120 - $210" },
-    { month: "December", price: "$135 - $235" },
-  ],
-
-  Barbados: [
-    { month: "January", price: "$220 - $420" },
-    { month: "February", price: "$230 - $430" },
-    { month: "March", price: "$215 - $400" },
-    { month: "April", price: "$190 - $360" },
-    { month: "May", price: "$170 - $320" },
-    { month: "June", price: "$160 - $295" },
-    { month: "July", price: "$165 - $300" },
-    { month: "August", price: "$170 - $310" },
-    { month: "September", price: "$155 - $285" },
-    { month: "October", price: "$160 - $290" },
-    { month: "November", price: "$185 - $345" },
-    { month: "December", price: "$240 - $460" },
-  ],
-
-  "New York": [],
-  Chicago: [],
-  Nashville: [],
-  "San Diego": [],
-  Orlando: [],
-};
 
   const beachPlaces = [
     {
-      name: "Bocas del Toro",
-      location: "Panama",
-      price: "120",
+      name: "Panama",
+      location: "Central America",
+      price: "$120",
       image:
-        "https://images.unsplash.com/photo-1573843981267-be1999ff37cd",
+        "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1200&auto=format&fit=crop",
       tag: "Island escape",
     },
     {
-      name: "Brandons Beach",
-      location: "Barbados",
+      name: "Barbados",
+      location: "Caribbean",
       price: "$260",
       image:
         "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
       tag: "Caribbean calm",
     },
     {
-      name: "San Juan",
-      location: "Puerto Rico",
+      name: "Puerto Rico",
+      location: "Caribbean",
       price: "$190",
       image:
-       "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+        "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
       tag: "Coastal culture",
     },
     {
-      name: "Lanikai Beach",
-      location: "Hawaii, United States",
+      name: "Hawaii",
+      location: "United States",
       price: "$355",
       image:
-        "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
       tag: "Tropical calm",
     },
   ];
+
   const culturePlaces = [
-  {
-    name: "Madrid",
-    location: "Spain",
-    price: "$150",
-    image:
-      "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop",
-    tag: "Art & culture",
-  },
-  {
-    name: "Osaka",
-    location: "Japan",
-    price: "$120",
-    image:
-      "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
-    tag: "Street food & nightlife",
-  },
-  {
-    name: "Rome",
-    location: "Italy",
-    price: "$180",
-    image:
-      "https://images.unsplash.com/photo-1529260830199-42c24126f198?q=80&w=1200&auto=format&fit=crop",
-    tag: "Historic landmarks",
-  },
-  {
-    name: "Cairo",
-    location: "Egypt",
-    price: "$90",
-    image:
-      "https://images.unsplash.com/photo-1568322445389-f64ac2515020?q=80&w=1200&auto=format&fit=crop",
-    tag: "Ancient wonders",
-  },
-];
-const displayedPlaces =
-  activeTab === "Culture" ? culturePlaces : beachPlaces;
+    {
+      name: "Madrid",
+      location: "Spain",
+      price: "$150",
+      image:
+        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop",
+      tag: "Art & culture",
+    },
+    {
+      name: "Japan",
+      location: "Asia",
+      price: "$120",
+      image:
+        "https://images.unsplash.com/photo-1590559899731-a382839e5549?q=80&w=1200&auto=format&fit=crop",
+      tag: "Street food & nightlife",
+    },
+    {
+      name: "Italy",
+      location: "Europe",
+      price: "$180",
+      image:
+        "https://images.unsplash.com/photo-1529260830199-42c24126f198?q=80&w=1200&auto=format&fit=crop",
+      tag: "Historic landmarks",
+    },
+    {
+      name: "Egypt",
+      location: "North Africa",
+      price: "$90",
+      image:
+        "https://images.unsplash.com/photo-1568322445389-f64ac2515020?q=80&w=1200&auto=format&fit=crop",
+      tag: "Ancient wonders",
+    },
+  ];
+
+  const displayedPlaces =
+    activeTab === "Culture" ? culturePlaces : beachPlaces;
+
+  const bookingCities = [
+    "Madrid",
+    "Panama",
+    "Japan",
+    "Barbados",
+    "New York",
+    "Myrtle Beach",
+    "Chicago",
+    "Nashville",
+  ];
+
+  const bookingPriceData = {
+    Madrid: [
+      { month: "April 2026", price: "$660 - $850" },
+      { month: "May 2026", price: "$600 - $800" },
+      { month: "June 2026", price: "$318 - $650" },
+      { month: "July 2026", price: "$320 - $700" },
+      { month: "August 2026", price: "$560 - $900" },
+      { month: "September 2026", price: "$570 - $880" },
+      { month: "October 2026", price: "$550 - $820" },
+      { month: "November 2026", price: "$550 - $800" },
+      { month: "December 2026", price: "$580 - $950" },
+      { month: "January 2027", price: "$600 - $900" },
+    ],
+    Panama: [
+      { month: "April 2026", price: "$220 - $480" },
+      { month: "May 2026", price: "$200 - $450" },
+      { month: "June 2026", price: "$210 - $470" },
+      { month: "July 2026", price: "$260 - $520" },
+      { month: "August 2026", price: "$240 - $500" },
+      { month: "September 2026", price: "$230 - $480" },
+      { month: "October 2026", price: "$250 - $510" },
+      { month: "November 2026", price: "$260 - $530" },
+      { month: "December 2026", price: "$400 - $750" },
+      { month: "January 2027", price: "$300 - $600" },
+    ],
+    Japan: [
+      { month: "April 2026", price: "$900 - $1400" },
+      { month: "May 2026", price: "$850 - $1300" },
+      { month: "June 2026", price: "$800 - $1200" },
+      { month: "July 2026", price: "$950 - $1500" },
+      { month: "August 2026", price: "$1000 - $1600" },
+      { month: "September 2026", price: "$850 - $1300" },
+      { month: "October 2026", price: "$900 - $1400" },
+      { month: "November 2026", price: "$850 - $1300" },
+      { month: "December 2026", price: "$1100 - $1700" },
+      { month: "January 2027", price: "$950 - $1400" },
+    ],
+    Barbados: [
+      { month: "April 2026", price: "$400 - $700" },
+      { month: "May 2026", price: "$380 - $650" },
+      { month: "June 2026", price: "$350 - $600" },
+      { month: "July 2026", price: "$420 - $750" },
+      { month: "August 2026", price: "$430 - $780" },
+      { month: "September 2026", price: "$360 - $620" },
+      { month: "October 2026", price: "$380 - $650" },
+      { month: "November 2026", price: "$420 - $720" },
+      { month: "December 2026", price: "$600 - $1000" },
+      { month: "January 2027", price: "$550 - $900" },
+    ],
+  };
+
+  const emptyMonths = [
+    { month: "April 2026", price: "" },
+    { month: "May 2026", price: "" },
+    { month: "June 2026", price: "" },
+    { month: "July 2026", price: "" },
+    { month: "August 2026", price: "" },
+    { month: "September 2026", price: "" },
+    { month: "October 2026", price: "" },
+    { month: "November 2026", price: "" },
+    { month: "December 2026", price: "" },
+    { month: "January 2027", price: "" },
+  ];
+
+  const calendarMonths = [
+    { month: "April", year: 2026, days: 30, firstDay: 3 },
+    { month: "May", year: 2026, days: 31, firstDay: 5 },
+    { month: "June", year: 2026, days: 30, firstDay: 1 },
+    { month: "July", year: 2026, days: 31, firstDay: 3 },
+    { month: "August", year: 2026, days: 31, firstDay: 6 },
+    { month: "September", year: 2026, days: 30, firstDay: 2 },
+    { month: "October", year: 2026, days: 31, firstDay: 4 },
+    { month: "November", year: 2026, days: 30, firstDay: 0 },
+    { month: "December", year: 2026, days: 31, firstDay: 2 },
+    { month: "January", year: 2027, days: 31, firstDay: 5 },
+  ];
+
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  function handleDateSelect(month, day, year) {
+    const clickedDate = new Date(`${month} ${day}, ${year}`);
+
+    if (!departureDate || (departureDate && returnDate)) {
+      setDepartureDate({ month, day, year });
+      setReturnDate(null);
+      return;
+    }
+
+    const departure = new Date(
+      `${departureDate.month} ${departureDate.day}, ${departureDate.year}`
+    );
+
+    if (clickedDate < departure) {
+      setDepartureDate({ month, day, year });
+      setReturnDate(null);
+    } else {
+      setReturnDate({ month, day, year });
+      setShowCalendar(false);
+    }
+  }
+
+  function getDateDisplay() {
+    if (departureDate && returnDate) {
+      return `${departureDate.month} ${departureDate.day}, ${departureDate.year} - ${returnDate.month} ${returnDate.day}, ${returnDate.year}`;
+    }
+
+    if (departureDate) {
+      return `${departureDate.month} ${departureDate.day}, ${departureDate.year}`;
+    }
+
+    return "Dates";
+  }
+
+  function renderMonth(monthData) {
+    const emptyDays = Array(monthData.firstDay).fill(null);
+    const actualDays = Array.from({ length: monthData.days }, (_, i) => i + 1);
+    const allDays = [...emptyDays, ...actualDays];
+
+    return (
+      <div style={styles.monthBlock}>
+        <h3 style={styles.monthTitle}>
+          {monthData.month} {monthData.year}
+        </h3>
+
+        <div style={styles.weekRow}>
+          {weekDays.map((day) => (
+            <div key={day} style={styles.weekDay}>
+              {day}
+            </div>
+          ))}
+        </div>
+
+        <div style={styles.daysGrid}>
+          {allDays.map((day, index) => {
+            if (!day) {
+              return <div key={index} style={styles.emptyDay}></div>;
+            }
+
+            const isDeparture =
+              departureDate &&
+              departureDate.day === day &&
+              departureDate.month === monthData.month &&
+              departureDate.year === monthData.year;
+
+            const isReturn =
+              returnDate &&
+              returnDate.day === day &&
+              returnDate.month === monthData.month &&
+              returnDate.year === monthData.year;
+
+            return (
+              <div
+                key={index}
+                style={{
+                  ...styles.dayCell,
+                  ...(isDeparture || isReturn ? styles.selectedDay : {}),
+                }}
+                onClick={() =>
+                  handleDateSelect(monthData.month, day, monthData.year)
+                }
+              >
+                {day}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  const bestTimeImage =
+    selectedCity === "Madrid"
+      ? "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=1200&auto=format&fit=crop"
+      : selectedCity === "Panama"
+      ? "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?q=80&w=1200&auto=format&fit=crop"
+      : selectedCity === "Japan"
+      ? "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1200&auto=format&fit=crop"
+      : selectedCity === "Barbados"
+      ? "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
+      : "";
+
   return (
     <div style={styles.page}>
       <nav style={styles.nav}>
-        <h1 style={styles.logo}>Triply</h1>
+        <h1 style={styles.logo} onClick={() => navigate("/home")}>
+          Triply
+        </h1>
 
         <div style={styles.navLinks}>
           <span style={styles.link}>Voting</span>
@@ -215,213 +329,283 @@ const displayedPlaces =
                 style={styles.inputBox}
                 onClick={() => setShowDestinations(!showDestinations)}
               >
-                Where to?
+                {selectedDestination || "Where to?"}
               </div>
 
               {showDestinations && (
                 <div style={styles.dropdownMenu}>
                   {destinationOptions.map((place, index) => (
-                    <div key={index} style={styles.dropdownItem}>
+                    <div
+                      key={index}
+                      style={styles.dropdownItem}
+                      onClick={() => {
+                        setSelectedDestination(place.country);
+                        setShowDestinations(false);
+                      }}
+                    >
                       <div style={styles.dropdownCountry}>{place.country}</div>
-                      <div style={styles.dropdownHotel}>{place.hotel}</div>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-<div style={styles.dateWrapper}>
-  <div
-    style={{
-      ...styles.inputBox,
-      border: showCalendar ? "2px solid #eb9757ff" : "1px solid #ddd",
-    }}
-    onClick={() => setShowCalendar((prev) => !prev)}
-  >
-    {selectedDate || "Dates"}
-  </div>
-
-  {showCalendar && (
-    <div style={styles.calendarDropdown}>
-      <div style={styles.bestTimePanel}>
-        <h2 style={styles.bestTimeTitle}>
-          Discover the best time to book your next stay
-        </h2>
-
-        <div style={styles.bestTimeTabs}>
-          {[
-            "Panama",
-            "Madrid",
-            "Japan",
-            "Barbados",
-            "New York",
-            "Chicago",
-            "Nashville",
-            "San Diego",
-            "Orlando",
-          ].map((place) => (
-            <span
-              key={place}
-              style={
-                activeBestTimeTab === place
-                  ? styles.bestTimeActiveTab
-                  : styles.bestTimeTab
-              }
-              onClick={() => setActiveBestTimeTab(place)}
-            >
-              {place}
-            </span>
-          ))}
-        </div>
-
-        <div style={styles.bestTimeRows}>
-          {bestTimeData[activeBestTimeTab]?.length ? (
-            bestTimeData[activeBestTimeTab].map((item) => (
-              <div key={item.month} style={styles.bestTimeRow}>
-                <span style={styles.bestTimeMonth}>{item.month}</span>
-                <span style={styles.bestTimePrice}>{item.price}</span>
+            <div style={styles.dateWrapper}>
+              <div
+                style={styles.inputBox}
+                onClick={() => setShowCalendar(!showCalendar)}
+              >
+                {getDateDisplay()}
               </div>
-            ))
-          ) : (
-            <div style={styles.bestTimeEmpty}>No date pricing added yet.</div>
-          )}
+
+              {showCalendar && (
+                <div style={styles.calendarDropdown}>
+                  <div style={styles.calendarTopTabs}>
+                    <div style={styles.calendarTopTabActive}>Calendar</div>
+                    <div style={styles.calendarTopTab}>Flexible dates</div>
+                  </div>
+
+                  <div style={styles.calendarMain}>
+                    <button
+                      type="button"
+                      style={styles.arrowBtn}
+                      onClick={() =>
+                        setCalendarIndex(Math.max(0, calendarIndex - 1))
+                      }
+                    >
+                      ‹
+                    </button>
+
+                    <div style={styles.monthsContainer}>
+                      {renderMonth(calendarMonths[calendarIndex])}
+                      {calendarMonths[calendarIndex + 1] &&
+                        renderMonth(calendarMonths[calendarIndex + 1])}
+                    </div>
+
+                    <button
+                      type="button"
+                      style={styles.arrowBtn}
+                      onClick={() =>
+                        setCalendarIndex(
+                          Math.min(calendarMonths.length - 2, calendarIndex + 1)
+                        )
+                      }
+                    >
+                      ›
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div style={styles.travelersWrapper}>
+              <div
+                style={styles.inputBox}
+                onClick={() => setShowTravelers(!showTravelers)}
+              >
+                <div style={styles.travelersLabel}>Travelers</div>
+                <div style={styles.travelersValue}>
+                  {adults + children} travelers, {rooms} room
+                  {rooms > 1 ? "s" : ""}
+                </div>
+              </div>
+
+              {showTravelers && (
+                <div style={styles.travelersDropdown}>
+                  <h3 style={styles.travelersTitle}>Room 1</h3>
+
+                  <div style={styles.counterRow}>
+                    <div>
+                      <div style={styles.counterLabel}>Adults</div>
+                    </div>
+
+                    <div style={styles.counterControls}>
+                      <button
+                        type="button"
+                        style={styles.circleBtn}
+                        onClick={() => setAdults(Math.max(1, adults - 1))}
+                      >
+                        −
+                      </button>
+                      <span style={styles.counterNumber}>{adults}</span>
+                      <button
+                        type="button"
+                        style={styles.circleBtn}
+                        onClick={() => setAdults(adults + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={styles.counterRow}>
+                    <div>
+                      <div style={styles.counterLabel}>Children</div>
+                      <div style={styles.counterSubtext}>Ages 0 to 17</div>
+                    </div>
+
+                    <div style={styles.counterControls}>
+                      <button
+                        type="button"
+                        style={styles.circleBtn}
+                        onClick={() => setChildren(Math.max(0, children - 1))}
+                      >
+                        −
+                      </button>
+                      <span style={styles.counterNumber}>{children}</span>
+                      <button
+                        type="button"
+                        style={styles.circleBtn}
+                        onClick={() => setChildren(children + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    style={styles.addRoomText}
+                    onClick={() => setRooms(rooms + 1)}
+                  >
+                    Add another room
+                  </div>
+
+                  <div style={styles.travelersFooter}>
+                    <span style={styles.footerLink}>
+                      Need to book 9 or more rooms?
+                    </span>
+                    <button
+                      type="button"
+                      style={styles.doneBtn}
+                      onClick={() => setShowTravelers(false)}
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              style={styles.searchBtn}
+              onClick={() => {
+                if (selectedDestination === "Panama") {
+                  navigate("/panama");
+                } else if (selectedDestination === "Barbados") {
+                  navigate("/barbados");
+                }
+              }}
+            >
+              Search
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
-  )}
-</div>           <div style={styles.travelersWrapper}>
-  <div
-    style={styles.inputBox}
-    onClick={() => setShowTravelers(!showTravelers)}
-  >
-    <div style={styles.travelersLabel}>Travelers</div>
-    <div style={styles.travelersValue}>
-      {adults + children} travelers, {rooms} room
-      {rooms > 1 ? "s" : ""}
-    </div>
-  </div>
+      </section>
 
-  {showTravelers && (
-    <div style={styles.travelersDropdown}>
-      <h3 style={styles.travelersTitle}>Room 1</h3>
+      <section style={styles.bestTimeSection}>
+        <h2 style={styles.bestTimeTitle}>
+Find the cheapest months to fly        </h2>
 
-      <div style={styles.counterRow}>
-        <div>
-          <div style={styles.counterLabel}>Adults</div>
-        </div>
+        <div style={styles.bestTimeBox}>
+          <div style={styles.bestTimeTabs}>
+            {bookingCities.map((city) => (
+              <span
+                key={city}
+                onClick={() => setSelectedCity(city)}
+                style={
+                  selectedCity === city
+                    ? styles.bestTimeTabActive
+                    : styles.bestTimeTab
+                }
+              >
+                {city}
+              </span>
+            ))}
+          </div>
 
-        <div style={styles.counterControls}>
-          <button
-            style={styles.circleBtn}
-            onClick={() => setAdults(Math.max(1, adults - 1))}
-          >
-            −
-          </button>
-          <span style={styles.counterNumber}>{adults}</span>
-          <button
-            style={styles.circleBtn}
-            onClick={() => setAdults(adults + 1)}
-          >
-            +
-          </button>
-        </div>
-      </div>
+          <div style={styles.bestTimeContent}>
+            <div style={styles.bestTimeImageWrap}>
+              {bestTimeImage ? (
+                <img
+                  src={bestTimeImage}
+                  alt={selectedCity}
+                  style={styles.bestTimeImage}
+                />
+              ) : (
+                <div style={styles.bestTimeImagePlaceholder}></div>
+              )}
+            </div>
 
-      <div style={styles.counterRow}>
-        <div>
-          <div style={styles.counterLabel}>Children</div>
-          <div style={styles.counterSubtext}>Ages 0 to 17</div>
-        </div>
-
-        <div style={styles.counterControls}>
-          <button
-            style={styles.circleBtn}
-            onClick={() => setChildren(Math.max(0, children - 1))}
-          >
-            −
-          </button>
-          <span style={styles.counterNumber}>{children}</span>
-          <button
-            style={styles.circleBtn}
-            onClick={() => setChildren(children + 1)}
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <div
-        style={styles.addRoomText}
-        onClick={() => setRooms(rooms + 1)}
-      >
-        Add another room
-      </div>
-
-      <div style={styles.travelersFooter}>
-        <span style={styles.footerLink}>Need to book 9 or more rooms?</span>
-        <button
-          style={styles.doneBtn}
-          onClick={() => setShowTravelers(false)}
-        >
-          Done
-        </button>
-      </div>
-    </div>
-  )}
-</div>
-            <button style={styles.searchBtn}>Search</button>
+            <div style={styles.bestTimeMonths}>
+              {(bookingPriceData[selectedCity] || emptyMonths).map(
+                (item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      ...styles.monthPriceRow,
+                      ...(index === 1 ? styles.monthPriceRowActive : {}),
+                    }}
+                  >
+                    <span>{item.month}</span>
+                    <span>{item.price}</span>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       <section style={styles.staysSection}>
         <h2 style={styles.sectionTitle}>Stays for every travel style</h2>
-        <p style={styles.sectionSubtitle}>
-          Average prices based on current calendar month
-        </p>
 
-       <div style={styles.tabs}>
-  <span
-    style={activeTab === "Beach" ? styles.activeTab : styles.tab}
-    onClick={() => setActiveTab("Beach")}
-  >
-    Beach
-  </span>
+        <div style={styles.tabs}>
+          <span
+            style={activeTab === "Beach" ? styles.activeTab : styles.tab}
+            onClick={() => setActiveTab("Beach")}
+          >
+            Beach
+          </span>
 
-  <span
-    style={activeTab === "Culture" ? styles.activeTab : styles.tab}
-    onClick={() => setActiveTab("Culture")}
-  >
-    Culture
-  </span>
+          <span
+            style={activeTab === "Culture" ? styles.activeTab : styles.tab}
+            onClick={() => setActiveTab("Culture")}
+          >
+            Culture
+          </span>
 
-  <span
-    style={activeTab === "Ski" ? styles.activeTab : styles.tab}
-    onClick={() => setActiveTab("Ski")}
-  >
-    Ski
-  </span>
+          <span
+            style={activeTab === "Ski" ? styles.activeTab : styles.tab}
+            onClick={() => setActiveTab("Ski")}
+          >
+            Ski
+          </span>
 
-  <span
-    style={activeTab === "Family" ? styles.activeTab : styles.tab}
-    onClick={() => setActiveTab("Family")}
-  >
-    Family
-  </span>
+          <span
+            style={activeTab === "Family" ? styles.activeTab : styles.tab}
+            onClick={() => setActiveTab("Family")}
+          >
+            Family
+          </span>
 
-  <span
-    style={activeTab === "Wellness" ? styles.activeTab : styles.tab}
-    onClick={() => setActiveTab("Wellness")}
-  >
-    Wellness and Relaxation
-  </span>
-</div>
+          <span
+            style={activeTab === "Wellness" ? styles.activeTab : styles.tab}
+            onClick={() => setActiveTab("Wellness")}
+          >
+            Wellness and Relaxation
+          </span>
+        </div>
 
-       <div style={styles.cardGrid}>
-  {displayedPlaces.map((place) => (
+        <div style={styles.cardGrid}>
+          {displayedPlaces.map((place) => (
             <div key={place.name} style={styles.card}>
               <div style={styles.imageWrap}>
-                <img src={place.image} alt={place.name} style={styles.cardImage} />
+                <img
+                  src={place.image}
+                  alt={place.name}
+                  style={styles.cardImage}
+                />
                 <span style={styles.tag}>{place.tag}</span>
               </div>
 
@@ -463,6 +647,7 @@ const styles = {
     background: "linear-gradient(90deg, #f7a8b8, #fcbf8f)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
+    cursor: "pointer",
   },
 
   navLinks: {
@@ -538,12 +723,24 @@ const styles = {
 
   destinationWrapper: {
     position: "relative",
-    flex: "1",
+    flex: 1,
+    minWidth: "220px",
+  },
+
+  dateWrapper: {
+    position: "relative",
+    flex: 1,
+    minWidth: "220px",
+  },
+
+  travelersWrapper: {
+    position: "relative",
+    flex: 1,
     minWidth: "220px",
   },
 
   inputBox: {
-    flex: "1",
+    flex: 1,
     minWidth: "220px",
     padding: "16px",
     border: "1px solid #ddd",
@@ -571,16 +768,11 @@ const styles = {
     padding: "14px",
     borderBottom: "1px solid #f1f1f1",
     background: "white",
+    cursor: "pointer",
   },
 
   dropdownCountry: {
     fontWeight: "600",
-  },
-
-  dropdownHotel: {
-    fontSize: "14px",
-    color: "#777",
-    marginTop: "4px",
   },
 
   searchBtn: {
@@ -594,6 +786,331 @@ const styles = {
     fontSize: "18px",
   },
 
+  calendarDropdown: {
+    position: "absolute",
+    top: "78px",
+    left: "-180px",
+    width: "1100px",
+    background: "white",
+    border: "1px solid #ddd",
+    borderRadius: "20px",
+    boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
+    zIndex: 999,
+    overflow: "hidden",
+  },
+
+  calendarTopTabs: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    background: "#f2f4f7",
+  },
+
+  calendarTopTabActive: {
+    padding: "20px",
+    textAlign: "center",
+    fontSize: "20px",
+    fontWeight: "600",
+    color: "#fcbf8f",
+    borderBottom: "3px solid #fcbf8f",
+    background: "white",
+  },
+
+  calendarTopTab: {
+    padding: "20px",
+    textAlign: "center",
+    fontSize: "20px",
+    fontWeight: "600",
+    color: "#1f2a44",
+  },
+
+  calendarMain: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "20px",
+    padding: "20px",
+  },
+
+  monthsContainer: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "40px",
+    flex: 1,
+  },
+
+  monthBlock: {
+    width: "100%",
+  },
+
+  monthTitle: {
+    textAlign: "center",
+    fontSize: "28px",
+    color: "#1f2a44",
+    marginBottom: "25px",
+  },
+
+  weekRow: {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    marginBottom: "14px",
+  },
+
+  weekDay: {
+    textAlign: "center",
+    fontSize: "18px",
+    color: "#1f2a44",
+  },
+
+  daysGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    gap: "10px",
+  },
+
+  emptyDay: {
+    height: "48px",
+  },
+
+  dayCell: {
+    height: "48px",
+    width: "48px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "0 auto",
+    borderRadius: "50%",
+    cursor: "pointer",
+    fontSize: "20px",
+    color: "#1f2a44",
+  },
+
+  selectedDay: {
+    background: "#e47adaff",
+    color: "white",
+    fontWeight: "700",
+  },
+
+  arrowBtn: {
+    border: "none",
+    background: "#f5f5f5",
+    width: "54px",
+    height: "54px",
+    borderRadius: "50%",
+    fontSize: "36px",
+    cursor: "pointer",
+    color: "#1f2a44",
+    marginTop: "80px",
+  },
+
+  travelersLabel: {
+    fontSize: "16px",
+    color: "#1f2a44",
+    marginBottom: "6px",
+  },
+
+  travelersValue: {
+    fontSize: "18px",
+    color: "#1f2a44",
+  },
+
+  travelersDropdown: {
+    position: "absolute",
+    top: "70px",
+    right: 0,
+    width: "420px",
+    background: "white",
+    border: "1px solid #ddd",
+    borderRadius: "20px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
+    zIndex: 20,
+    padding: "28px",
+  },
+
+  travelersTitle: {
+    fontSize: "22px",
+    color: "#1f2a44",
+    margin: "0 0 30px 0",
+  },
+
+  counterRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "32px",
+  },
+
+  counterLabel: {
+    fontSize: "18px",
+    color: "#1f2a44",
+  },
+
+  counterSubtext: {
+    fontSize: "14px",
+    color: "#555",
+    marginTop: "6px",
+  },
+
+  counterControls: {
+    display: "flex",
+    alignItems: "center",
+    gap: "18px",
+  },
+
+  circleBtn: {
+    width: "48px",
+    height: "48px",
+    borderRadius: "50%",
+    border: "2px solid #98a0b8",
+    background: "white",
+    color: "#1f2a44",
+    fontSize: "28px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  counterNumber: {
+    fontSize: "20px",
+    color: "#1f2a44",
+    minWidth: "20px",
+    textAlign: "center",
+  },
+
+  addRoomText: {
+    color: "#eb9757ff",
+    fontSize: "18px",
+    fontWeight: "600",
+    cursor: "pointer",
+    marginBottom: "40px",
+    textAlign: "center",
+  },
+
+  travelersFooter: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: "20px",
+  },
+
+  footerLink: {
+    color: "#eb9757ff",
+    fontSize: "16px",
+  },
+
+  doneBtn: {
+    background: "#f7a8b8",
+    color: "white",
+    border: "none",
+    borderRadius: "999px",
+    padding: "14px 26px",
+    fontSize: "18px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+
+  bestTimeSection: {
+    maxWidth: "1400px",
+    margin: "0 auto 60px auto",
+    padding: "0 40px",
+  },
+
+  bestTimeTitle: {
+    fontSize: "48px",
+    fontWeight: "700",
+    color: "#000",
+    marginBottom: "24px",
+    textAlign: "left",
+  },
+
+  bestTimeBox: {
+    backgroundColor: "#fff",
+    border: "1px solid #eee",
+    borderRadius: "22px",
+    padding: "24px 24px 28px",
+  },
+
+  bestTimeTabs: {
+    display: "flex",
+    gap: "36px",
+    alignItems: "center",
+    overflowX: "auto",
+    borderBottom: "1px solid #ddd",
+    paddingBottom: "14px",
+    marginBottom: "24px",
+  },
+
+  bestTimeTab: {
+    fontSize: "22px",
+    fontWeight: "700",
+    color: "#222",
+    cursor: "pointer",
+    paddingBottom: "10px",
+    whiteSpace: "nowrap",
+  },
+
+  bestTimeTabActive: {
+    fontSize: "22px",
+    fontWeight: "700",
+    color: "#eb9757ff",
+    cursor: "pointer",
+    paddingBottom: "10px",
+    borderBottom: "4px solid #f7a8b8",
+    whiteSpace: "nowrap",
+  },
+
+  bestTimeContent: {
+    display: "grid",
+    gridTemplateColumns: "1.05fr 1.4fr",
+    gap: "24px",
+    alignItems: "start",
+  },
+
+  bestTimeImageWrap: {
+    width: "100%",
+  },
+
+  bestTimeImage: {
+    width: "100%",
+    height: "540px",
+    objectFit: "cover",
+    borderRadius: "18px",
+  },
+
+  bestTimeImagePlaceholder: {
+    width: "100%",
+    height: "540px",
+    borderRadius: "18px",
+    backgroundColor: "#f7f7f7",
+  },
+
+  bestTimeMonths: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "14px",
+    maxHeight: "620px",   
+  overflowY: "auto",
+  paddingRight: "6px",
+  },
+
+  monthPriceRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "22px 24px",
+    border: "1px solid #ddd",
+    borderRadius: "14px",
+    backgroundColor: "#fff",
+    fontSize: "22px",
+    fontWeight: "600",
+    color: "#222",
+  },
+
+  monthPriceRowActive: {
+    backgroundColor: "#f7d6df",
+    border: "1px solid #f1b9c9",
+  },
+
   staysSection: {
     padding: "40px",
   },
@@ -602,12 +1119,6 @@ const styles = {
     fontSize: "42px",
     color: "#1f2a44",
     marginBottom: "8px",
-  },
-
-  sectionSubtitle: {
-    fontSize: "20px",
-    color: "#333",
-    marginBottom: "24px",
   },
 
   tabs: {
@@ -623,8 +1134,9 @@ const styles = {
     fontSize: "22px",
     fontWeight: "bold",
     color: "#eb9757ff",
-    borderBottom: "3px solid #1668e3",
+    borderBottom: "3px solid #f7a8b8",
     paddingBottom: "10px",
+    cursor: "pointer",
   },
 
   tab: {
@@ -632,6 +1144,7 @@ const styles = {
     fontWeight: "bold",
     color: "#1f2a44",
     paddingBottom: "10px",
+    cursor: "pointer",
   },
 
   cardGrid: {
@@ -697,255 +1210,4 @@ const styles = {
     fontSize: "16px",
     color: "#444",
   },
-  dateWrapper: {
-  position: "relative",
-  flex: "1",
-  minWidth: "220px",
-},
-
-calendarDropdown: {
-  position: "absolute",
-  top: "78px",
-  left: "-180px",
-  width: "1100px",
-  maxHeight: "650px",
-  overflowY: "auto",
-  background: "white",
-  border: "1px solid #ddd",
-  borderRadius: "20px",
-  boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
-  zIndex: 999,
-  padding: "20px",
-},
-
-calendarHeader: {
-  fontSize: "28px",
-  fontWeight: "600",
-  marginBottom: "20px",
-  color: "#1f2a44",
-},
-
-calendarMonths: {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: "24px",
-},
-
-calendarMonthBlock: {
-  border: "1px solid #eee",
-  borderRadius: "16px",
-  padding: "18px",
-},
-
-calendarMonthTitle: {
-  margin: "0 0 16px 0",
-  fontSize: "26px",
-  color: "#1f2a44",
-},
-
-calendarGrid: {
-  display: "grid",
-  gridTemplateColumns: "repeat(7, 1fr)",
-  gap: "10px",
-},
-
-dayButton: {
-  border: "none",
-  background: "#f8f8f8",
-  borderRadius: "10px",
-  padding: "12px 0",
-  fontSize: "16px",
-  cursor: "pointer",
-  color: "#1f2a44",
-},
-travelersWrapper: {
-  position: "relative",
-  flex: "1",
-  minWidth: "220px",
-},
-
-travelersLabel: {
-  fontSize: "16px",
-  color: "#1f2a44",
-  marginBottom: "6px",
-},
-
-travelersValue: {
-  fontSize: "18px",
-  color: "#1f2a44",
-},
-
-travelersDropdown: {
-  position: "absolute",
-  top: "70px",
-  right: 0,
-  width: "420px",
-  background: "white",
-  border: "1px solid #ddd",
-  borderRadius: "20px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
-  zIndex: 20,
-  padding: "28px",
-},
-
-travelersTitle: {
-  fontSize: "22px",
-  color: "#1f2a44",
-  margin: "0 0 30px 0",
-},
-
-counterRow: {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "32px",
-},
-
-counterLabel: {
-  fontSize: "18px",
-  color: "#1f2a44",
-},
-
-counterSubtext: {
-  fontSize: "14px",
-  color: "#555",
-  marginTop: "6px",
-},
-
-counterControls: {
-  display: "flex",
-  alignItems: "center",
-  gap: "18px",
-},
-
-circleBtn: {
-  width: "48px",
-  height: "48px",
-  borderRadius: "50%",
-  border: "2px solid #98a0b8",
-  background: "white",
-  color: "#1f2a44",
-  fontSize: "28px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-},
-
-counterNumber: {
-  fontSize: "20px",
-  color: "#1f2a44",
-  minWidth: "20px",
-  textAlign: "center",
-},
-
-addRoomText: {
-  color: "#eb9757ff",
-  fontSize: "18px",
-  fontWeight: "600",
-  cursor: "pointer",
-  marginBottom: "40px",
-  textAlign: "center",
-},
-
-travelersFooter: {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginTop: "20px",
-},
-
-footerLink: {
-  color: "#eb9757ff",
-  fontSize: "16px",
-},
-
-doneBtn: {
-  background: "#e47adaff",
-  color: "white",
-  border: "none",
-  borderRadius: "999px",
-  padding: "14px 26px",
-  fontSize: "18px",
-  fontWeight: "600",
-  cursor: "pointer",
-},
-bestTimePanel: {
-  width: "100%",
-  background: "white",
-  border: "1px solid #ddd",
-  borderRadius: "20px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-  padding: "24px",
-},
-
-bestTimeTitle: {
-  fontSize: "28px",
-  fontWeight: "700",
-  color: "#111",
-  margin: "0 0 20px 0",
-},
-
-bestTimeTabs: {
-  display: "flex",
-  gap: "28px",
-  overflowX: "auto",
-  borderBottom: "1px solid #ddd",
-  paddingBottom: "12px",
-  marginBottom: "20px",
-  whiteSpace: "nowrap",
-},
-
-bestTimeTab: {
-  fontSize: "18px",
-  fontWeight: "600",
-  color: "#222",
-  cursor: "pointer",
-  paddingBottom: "10px",
-},
-
-bestTimeActiveTab: {
-  fontSize: "18px",
-  fontWeight: "700",
-  color: "#eb9757ff",
-  cursor: "pointer",
-  paddingBottom: "10px",
-  borderBottom: "3px solid #eb9757ff",
-},
-
-bestTimeRows: {
-  maxHeight: "520px",
-  overflowY: "auto",
-  display: "flex",
-  flexDirection: "column",
-  gap: "14px",
-},
-
-bestTimeRow: {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "20px 22px",
-  border: "1px solid #ddd",
-  borderRadius: "14px",
-  background: "#fff",
-},
-
-bestTimeMonth: {
-  fontSize: "20px",
-  fontWeight: "600",
-  color: "#222",
-},
-
-bestTimePrice: {
-  fontSize: "20px",
-  fontWeight: "700",
-  color: "#222",
-},
-
-bestTimeEmpty: {
-  padding: "30px 10px",
-  fontSize: "18px",
-  color: "#777",
-},
 };
