@@ -224,7 +224,7 @@ image: "https://imgs.search.brave.com/pl370Ry4OkQvDs3RcZBc4GXC9Hz96aH6zYnZBCq2n-
     <div style={styles.page}>
       <nav style={styles.nav}>
       <h1 style={styles.logo} onClick={() => console.log("/home")}>
-  Alka
+  Triply
 </h1>
 
         <div style={styles.navLinks}>
