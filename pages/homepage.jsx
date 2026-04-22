@@ -2,20 +2,24 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const savedUser = JSON.parse(localStorage.getItem("triplyUser"));
+  const navigate = useNavigate();
+
   const [showTravelers, setShowTravelers] = useState(false);
-  const [activeTab, setActiveTab] = useState("Beach");
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(1);
   const [showDestinations, setShowDestinations] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarIndex, setCalendarIndex] = useState(0);
-  const [departureDate, setDepartureDate] = useState(null);
-  const [returnDate, setReturnDate] = useState(null);
+
+  const [activeTab, setActiveTab] = useState("Beach");
   const [selectedDestination, setSelectedDestination] = useState("");
   const [selectedCity, setSelectedCity] = useState("Madrid");
 
-  const navigate = useNavigate();
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [rooms, setRooms] = useState(1);
+
+  const [departureDate, setDepartureDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
 
   const destinationOptions = [
     { country: "Japan" },
@@ -245,7 +249,7 @@ export default function HomePage() {
         <div style={styles.daysGrid}>
           {allDays.map((day, index) => {
             if (!day) {
-              return <div key={index} style={styles.emptyDay}></div>;
+              return <div key={index} style={styles.emptyDay} />;
             }
 
             const isDeparture =
@@ -305,7 +309,7 @@ export default function HomePage() {
           <span style={styles.link}>Trips</span>
 
           <div style={styles.userGreeting}>
-            <span>Welcome Alka</span>
+            <span>Welcome {savedUser?.firstName || "Guest"}</span>
             <span style={styles.locationIcon}>📍</span>
           </div>
         </div>
@@ -504,8 +508,7 @@ export default function HomePage() {
       </section>
 
       <section style={styles.bestTimeSection}>
-        <h2 style={styles.bestTimeTitle}>
-Find the cheapest months to fly        </h2>
+        <h2 style={styles.bestTimeTitle}>Find the cheapest months to fly</h2>
 
         <div style={styles.bestTimeBox}>
           <div style={styles.bestTimeTabs}>
@@ -533,7 +536,7 @@ Find the cheapest months to fly        </h2>
                   style={styles.bestTimeImage}
                 />
               ) : (
-                <div style={styles.bestTimeImagePlaceholder}></div>
+                <div style={styles.bestTimeImagePlaceholder} />
               )}
             </div>
 
@@ -626,9 +629,8 @@ Find the cheapest months to fly        </h2>
 const styles = {
   page: {
     minHeight: "100vh",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f6f6f6",
     fontFamily: "Arial, sans-serif",
-    color: "#000",
   },
 
   nav: {
@@ -676,34 +678,37 @@ const styles = {
     cursor: "pointer",
   },
 
-  hero: {
-    padding: "50px 40px",
-    backgroundColor: "#ffffff",
-  },
+hero: {
+  position: "relative",
+  padding: "70px 40px 30px",
+  background:
+    "linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)), url('https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat",
+},
 
-  heroText: {
-    textAlign: "center",
-    color: "#000",
-    fontSize: "48px",
-    marginBottom: "40px",
-    fontWeight: "normal",
-  },
+heroText: {
+  textAlign: "center",
+  color: "#000",
+  fontSize: "56px",
+  fontWeight: "900",
+  marginBottom: "40px",
+},
 
-  searchBox: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    backgroundColor: "white",
-    borderRadius: "20px",
-    padding: "30px",
-    border: "1px solid #eee",
-  },
+searchBox: {
+  maxWidth: "1200px",
+  margin: "0 auto",
+  backgroundColor: "#fff",
+  borderRadius: "24px",
+  padding: "30px",
+  border: "1px solid #e9e9e9",
+  boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+},
 
   menuRow: {
     display: "flex",
     justifyContent: "center",
     gap: "35px",
     fontSize: "22px",
-    fontWeight: "bold",
+    fontWeight: "700",
     marginBottom: "30px",
     flexWrap: "wrap",
     color: "#000",
@@ -740,7 +745,6 @@ const styles = {
   },
 
   inputBox: {
-    flex: 1,
     minWidth: "220px",
     padding: "16px",
     border: "1px solid #ddd",
@@ -756,7 +760,7 @@ const styles = {
     top: "60px",
     left: 0,
     width: "100%",
-    background: "white",
+    background: "#fff",
     border: "1px solid #ddd",
     borderRadius: "12px",
     boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
@@ -767,7 +771,7 @@ const styles = {
   dropdownItem: {
     padding: "14px",
     borderBottom: "1px solid #f1f1f1",
-    background: "white",
+    background: "#fff",
     cursor: "pointer",
   },
 
@@ -782,7 +786,7 @@ const styles = {
     border: "none",
     borderRadius: "12px",
     cursor: "pointer",
-    fontWeight: "bold",
+    fontWeight: "700",
     fontSize: "18px",
   },
 
@@ -791,7 +795,7 @@ const styles = {
     top: "78px",
     left: "-180px",
     width: "1100px",
-    background: "white",
+    background: "#fff",
     border: "1px solid #ddd",
     borderRadius: "20px",
     boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
@@ -812,7 +816,7 @@ const styles = {
     fontWeight: "600",
     color: "#fcbf8f",
     borderBottom: "3px solid #fcbf8f",
-    background: "white",
+    background: "#fff",
   },
 
   calendarTopTab: {
@@ -886,7 +890,7 @@ const styles = {
 
   selectedDay: {
     background: "#e47adaff",
-    color: "white",
+    color: "#fff",
     fontWeight: "700",
   },
 
@@ -918,7 +922,7 @@ const styles = {
     top: "70px",
     right: 0,
     width: "420px",
-    background: "white",
+    background: "#fff",
     border: "1px solid #ddd",
     borderRadius: "20px",
     boxShadow: "0 10px 30px rgba(0,0,0,0.12)",
@@ -961,7 +965,7 @@ const styles = {
     height: "48px",
     borderRadius: "50%",
     border: "2px solid #98a0b8",
-    background: "white",
+    background: "#fff",
     color: "#1f2a44",
     fontSize: "28px",
     cursor: "pointer",
@@ -1000,7 +1004,7 @@ const styles = {
 
   doneBtn: {
     background: "#f7a8b8",
-    color: "white",
+    color: "#fff",
     border: "none",
     borderRadius: "999px",
     padding: "14px 26px",
@@ -1016,7 +1020,7 @@ const styles = {
   },
 
   bestTimeTitle: {
-    fontSize: "48px",
+    fontSize: "40px",
     fontWeight: "700",
     color: "#000",
     marginBottom: "24px",
@@ -1088,9 +1092,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "14px",
-    maxHeight: "620px",   
-  overflowY: "auto",
-  paddingRight: "6px",
+    maxHeight: "620px",
+    overflowY: "auto",
+    paddingRight: "6px",
   },
 
   monthPriceRow: {
@@ -1132,7 +1136,7 @@ const styles = {
 
   activeTab: {
     fontSize: "22px",
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "#eb9757ff",
     borderBottom: "3px solid #f7a8b8",
     paddingBottom: "10px",
@@ -1141,7 +1145,7 @@ const styles = {
 
   tab: {
     fontSize: "22px",
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "#1f2a44",
     paddingBottom: "10px",
     cursor: "pointer",
@@ -1175,11 +1179,11 @@ const styles = {
     top: "14px",
     left: "14px",
     backgroundColor: "#111827",
-    color: "white",
+    color: "#fff",
     padding: "8px 12px",
     borderRadius: "10px",
     fontSize: "16px",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
 
   cardBody: {
@@ -1201,7 +1205,7 @@ const styles = {
   cardPrice: {
     margin: "0",
     fontSize: "22px",
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "#1f2a44",
   },
 

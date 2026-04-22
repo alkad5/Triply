@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Panama() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [cityFilter, setCityFilter] = useState("all");
   const [showDestinations, setShowDestinations] = useState(false);
-
+  const navigate = useNavigate();
+  const savedUser = JSON.parse(localStorage.getItem("triplyUser"));
   const selectedDestination = "Panama";
 
   const destinationOptions = ["Panama", "Barbados", "Japan", "Madrid"];
@@ -220,7 +223,9 @@ image: "https://imgs.search.brave.com/pl370Ry4OkQvDs3RcZBc4GXC9Hz96aH6zYnZBCq2n-
   return (
     <div style={styles.page}>
       <nav style={styles.nav}>
-        <h1 style={styles.logo}>Triply</h1>
+      <h1 style={styles.logo} onClick={() => console.log("/home")}>
+  Alka
+</h1>
 
         <div style={styles.navLinks}>
           <span style={styles.link}>Voting</span>
@@ -229,8 +234,7 @@ image: "https://imgs.search.brave.com/pl370Ry4OkQvDs3RcZBc4GXC9Hz96aH6zYnZBCq2n-
           <span style={styles.link}>Trips</span>
 
           <div style={styles.userGreeting}>
-            <span>Welcome Alka</span>
-            <span style={styles.locationIcon}>📍</span>
+          <span>Welcome {savedUser?.firstName || "Guest"}</span>          <span style={styles.locationIcon}>📍</span>
           </div>
         </div>
       </nav>
