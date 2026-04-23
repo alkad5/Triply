@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barbados Travel App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f8fb;
+      color: #222;
+    }
+
+    .app {
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0077cc;
+      margin-bottom: 25px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .sidebar {
+      width: 35%;
+      min-width: 280px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card.active {
+      border: 2px solid #00aaff;
+      background: #eef9ff;
+    }
+
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 10px 0 6px;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .details {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 18px;
+      background: #0077cc;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .btn:hover {
+      background: #005fa3;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      color: #0077cc;
+    }
+
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .place-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .place-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .place-card-content {
+      padding: 12px;
+    }
+
+    .place-card h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .place-card p {
+      margin: 6px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .direction-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .direction-link:hover {
+      background: #218838;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar,
+      .details {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>🌴 Barbados Travel App</h1>
+
+    <div class="container">
+      <div class="sidebar" id="tripList"></div>
+      <div class="details" id="tripDetails"></div>
+    </div>
+  </div>
+
+  <script>
+    const trips = [
+      {
+        id: 1,
+        title: "Bridgetown City Tour",
+        image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200",
+        start: "Independence Square, Barbados",
+        end: "George Washington House, Barbados",
+        stops: ["Independence Square", "Bay Street", "George Washington House"],
+
+        activities: [
+          {
+            name: "Carlisle Bay Beach",
+            image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900",
+            description: "Relax on the beach, swim, and enjoy scenic coastal views.",
+            location: "Carlisle Bay, Barbados"
+          },
+          {
+            name: "Barbados Museum",
+            image: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=900",
+            description: "Explore local history and heritage near Bridgetown.",
+            location: "Barbados Museum, Barbados"
+          },
+          {
+            name: "Pebbles Beach",
+            image: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=900",
+            description: "Popular nearby beach for walking, photos, and ocean views.",
+            location: "Pebbles Beach, Barbados"
+          }
+        ],
+
+        hotels: [
+          {
+            name: "Hilton Barbados Resort",
+            image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900",
+            description: "Luxury beachfront hotel close to Bridgetown attractions.",
+            location: "Hilton Barbados Resort, Barbados"
+          },
+          {
+            name: "Radisson Aquatica Resort",
+            image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=900",
+            description: "Oceanfront stay with easy access to city and beach.",
+            location: "Radisson Aquatica Resort Barbados"
+          },
+          {
+            name: "Sugar Bay Barbados",
+            image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900",
+            description: "All-inclusive hotel near historic and coastal sites.",
+            location: "Sugar Bay Barbados"
+          }
+        ],
+
+        restaurants: [
+          {
+            name: "Harbour Lights",
+            image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=900",
+            description: "Beachfront dining and entertainment near Bridgetown.",
+            location: "Harbour Lights Barbados"
+          },
+          {
+            name: "Buzo Osteria Italiana",
+            image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900",
+            description: "Stylish restaurant with pasta, seafood, and waterfront views.",
+            location: "Buzo Osteria Italiana Barbados"
+          },
+          {
+            name: "Cuz's Fish Shack",
+            image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=900",
+            description: "Famous local stop for fish cutters and quick meals.",
+            location: "Cuz's Fish Shack Barbados"
+          }
+        ]
+      },
+
+      {
+        id: 2,
+        title: "Cave Adventure",
+        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+        start: "Harrison's Cave, Barbados",
+        end: "Welchman Hall Gully, Barbados",
+        stops: ["Harrison's Cave", "Welchman Hall Gully"],
+
+        activities: [
+          {
+            name: "Harrison's Cave Tour",
+            image: "https://images.unsplash.com/photo-1511497584788-876760111969?w=900",
+            description: "Underground tram tour through caves and crystal formations.",
+            location: "Harrison's Cave, Barbados"
+          },
+          {
+            name: "Welchman Hall Gully Walk",
+            image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900",
+            description: "Nature walk with tropical plants and green scenery.",
+            location: "Welchman Hall Gully, Barbados"
+          },
+          {
+            name: "Monkey Viewing Area",
+            image: "https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?w=900",
+            description: "Spot green monkeys in the nearby natural environment.",
+            location: "Welchman Hall Gully, Barbados"
+          }
+        ],
+
+        hotels: [
+          {
+            name: "Apes Hill Barbados",
+            image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900",
+            description: "Upscale resort area with beautiful inland views.",
+            location: "Apes Hill Barbados"
+          },
+          {
+            name: "Sugar Cane Club Hotel",
+            image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=900",
+            description: "Quiet resort stay with relaxing atmosphere.",
+            location: "Sugar Cane Club Hotel And Spa, Barbados"
+          },
+          {
+            name: "The Orange Hill Beach Inn",
+            image: "https://images.unsplash.com/photo-1455587734955-081b22074882?w=900",
+            description: "Comfortable stay within driving distance of cave attractions.",
+            location: "Orange Hill Beach Inn Barbados"
+          }
+        ],
+
+        restaurants: [
+          {
+            name: "The Mill Café",
+            image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900",
+            description: "Casual café option after exploring the cave area.",
+            location: "The Mill Cafe Barbados"
+          },
+          {
+            name: "Open Kitchen",
+            image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900",
+            description: "Modern dining choice with varied menu options.",
+            location: "Open Kitchen Barbados"
+          },
+          {
+            name: "Chefette Warrens",
+            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900",
+            description: "Popular quick meal stop near central inland routes.",
+            location: "Chefette Warrens Barbados"
+          }
+        ]
+      },
+
+      {
+        id: 3,
+        title: "Beach Experience",
+        image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200",
+        start: "Boardwalk, Barbados",
+        end: "Mount Gay, Barbados",
+        stops: ["Boardwalk", "Atlantis Submarine", "Mount Gay"],
+
+        activities: [
+          {
+            name: "Boardwalk Walk",
+            image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900",
+            description: "Beautiful oceanfront stroll with nearby beach access.",
+            location: "Richard Haynes Boardwalk, Barbados"
+          },
+          {
+            name: "Atlantis Submarines",
+            image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900",
+            description: "Underwater sightseeing experience in Barbados waters.",
+            location: "Atlantis Submarines Barbados"
+          },
+          {
+            name: "Mount Gay Visitor Centre",
+            image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900",
+            description: "Tour the famous rum distillery and enjoy tastings.",
+            location: "Mount Gay Visitor Centre, Barbados"
+          }
+        ],
+
+        hotels: [
+          {
+            name: "Accra Beach Hotel",
+            image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900",
+            description: "Beachfront hotel ideal for a coastal stay.",
+            location: "Accra Beach Hotel & Spa, Barbados"
+          },
+          {
+            name: "South Gap Hotel",
+            image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900",
+            description: "Stylish hotel close to beaches, dining, and nightlife.",
+            location: "South Gap Hotel Barbados"
+          },
+          {
+            name: "Butterfly Beach Hotel",
+            image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900",
+            description: "Relaxing coastal hotel with sea views.",
+            location: "Butterfly Beach Hotel Barbados"
+          }
+        ],
+
+        restaurants: [
+          {
+            name: "Champers",
+            image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=900",
+            description: "Well-known oceanfront restaurant with local and international dishes.",
+            location: "Champers Restaurant Barbados"
+          },
+          {
+            name: "Blakey's on the Boardwalk",
+            image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?w=900",
+            description: "Casual seaside dining right by the boardwalk.",
+            location: "Blakey's On The Boardwalk Barbados"
+          },
+          {
+            name: "Tapas",
+            image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900",
+            description: "Popular waterfront dining spot for lunch and dinner.",
+            location: "Tapas Barbados"
+          }
+        ]
+      }
+    ];
+
+    let selectedTrip = trips[0];
+
+    function mapLink(location) {
+      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}&travelmode=driving`;
+    }
+
+    function tripRouteLink(trip) {
+      const origin = encodeURIComponent(trip.start);
+      const destination = encodeURIComponent(trip.end);
+      const waypoints = trip.stops
+        .slice(1, -1)
+        .map(stop => encodeURIComponent(stop + ", Barbados"))
+        .join("|");
+
+      return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
+    }
+
+    function createPlaceCards(title, items) {
+      return `
+        <h3 class="section-title">${title}</h3>
+        <div class="places-grid">
+          ${items.map(item => `
+            <div class="place-card">
+              <img src="${item.image}" alt="${item.name}">
+              <div class="place-card-content">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+                <p><strong>Location:</strong> ${item.location}</p>
+                <a
+                  href="${mapLink(item.location)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="direction-link"
+                >
+                  Get Directions
+                </a>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderTrips() {
+      const tripList = document.getElementById("tripList");
+      tripList.innerHTML = "";
+
+      trips.forEach((trip) => {
+        const card = document.createElement("div");
+        card.className = "card" + (trip.id === selectedTrip.id ? " active" : "");
+        card.innerHTML = `
+          <img src="${trip.image}" alt="${trip.title}">
+          <h3>${trip.title}</h3>
+          <p>${trip.start} → ${trip.end}</p>
+        `;
+        card.addEventListener("click", () => {
+          selectedTrip = trip;
+          renderTrips();
+          renderDetails();
+        });
+        tripList.appendChild(card);
+      });
+    }
+
+    function renderDetails() {
+      const details = document.getElementById("tripDetails");
+      details.innerHTML = `
+        <img class="hero-img" src="${selectedTrip.image}" alt="${selectedTrip.title}">
+        <h2>${selectedTrip.title}</h2>
+
+        <p><strong>Start:</strong> ${selectedTrip.start}</p>
+        <p><strong>End:</strong> ${selectedTrip.end}</p>
+
+        <h3>Trip Stops</h3>
+        <ul>
+          ${selectedTrip.stops.map(stop => `<li>${stop}</li>`).join("")}
+        </ul>
+
+        <a
+          href="${tripRouteLink(selectedTrip)}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn"
+        >
+          🚗 Start Trip Navigation
+        </a>
+
+        ${createPlaceCards("3 Nearby Activities", selectedTrip.activities)}
+        ${createPlaceCards("3 Nearby Hotels", selectedTrip.hotels)}
+        ${createPlaceCards("3 Nearby Restaurants", selectedTrip.restaurants)}
+      `;
+    }
+
+    renderTrips();
+    renderDetails();
+  </script>
+</body>
+</html>
