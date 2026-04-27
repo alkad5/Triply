@@ -123,7 +123,7 @@ function currency(value) {
   }).format(Number.isFinite(value) ? value : 0);
 }
 
-export function buildCalculations({
+function buildCalculations({
   mode,
   subtotal,
   taxPercent,
@@ -348,7 +348,7 @@ export default function BillSplitPro() {
     return "";
   }, [peopleCount, subtotalValue, mode, customSubtotal, calculations.length]);
 
-  function updatePeople(value: string) {
+  function updatePeople(value) {
     setPeople(value);
     const count = parseCount(value);
 
@@ -444,7 +444,7 @@ export default function BillSplitPro() {
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Bill Split </h1>
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Bills Split </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
               A bill-splitting experience for dinners, trips, and group events. Split equally or by what each
               person ordered, then download a receipt instantly.
